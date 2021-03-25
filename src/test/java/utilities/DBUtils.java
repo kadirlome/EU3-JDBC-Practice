@@ -134,7 +134,7 @@ public class DBUtils {
                 rowList.add(colNameValueMap);
             }
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
+            // TODO Auto-generated catch blockk
             e.printStackTrace();
         }
         return rowList;
