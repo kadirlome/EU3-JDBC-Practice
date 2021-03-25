@@ -1,0 +1,10 @@
+
+.idea/compiler.xml
+.idea/jarRepositories.xml
+.idea/modules.xml
+.idea/misc.xml
+.idea/vcs.xml
+target/test-classes/jdbctests/dynamic_list.class
+target/test-classes/jdbctests/jdbc_example.class
+target/test-classes/jdbctests/listOfMap_example.class
+target/test-classes/jdbctests/Main.class
