@@ -3,11 +3,13 @@ package apitests;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.testng.annotations.BeforeClass;
-import static io.restassured.RestAssured.baseURI;
-import static io.restassured.RestAssured.given;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.util.List;
+
+import static io.restassured.RestAssured.*;
 
 
 public class SpartanTestWithPath {
@@ -59,5 +61,33 @@ public class SpartanTestWithPath {
         Assert.assertEquals(name,"Lorenza");
         Assert.assertEquals(gender,"Female");
         Assert.assertEquals(phone,3312820936l);
+    }
+
+
+
+    @Test
+    public void getAllSpartanWithPath(){
+
+        Response response  = given().accept(ContentType.JSON)
+                .when().get("api/spartans");
+
+        //get id from l=spartans with path
+        int id = response.path("id[0]");
+        System.out.println(id);
+
+
+        //geet last names on the list
+        String firstname = response.path("name[-1]");
+        System.out.println(firstname);
+
+        //get all the names with path
+        List<String> names = response.path("name");
+        for (String namess : names) {
+            System.out.println(namess);
+        }
+
+
+
+
     }
 }
