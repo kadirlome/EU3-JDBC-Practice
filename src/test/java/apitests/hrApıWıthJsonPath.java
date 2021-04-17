@@ -13,7 +13,7 @@ public class hrApıWıthJsonPath {
 
     @BeforeClass
     public void beforeclass(){
-        baseURI="http://54.234.71.110:8000/";
+        baseURI="http://3.84.209.12:8000/";
     }
 
 
