@@ -4,13 +4,14 @@ import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import jdbctests.ConfigurationReader;
-
+import static org.hamcrest.Matchers.*;
 import static org.testng.Assert.*;
 
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.util.List;
+import java.util.Locale;
 
 import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
@@ -33,22 +34,29 @@ public class HomeWork_1 {
         - And Content - Type is Json
         -And country_id is US
         - And Country_name is United States of America
-        -And Region_id is
        */
 
         Response response = given().accept(ContentType.JSON)
-                .and().pathParam("value", "US")
-                .when().get("countries");
+                .pathParam("value", "US")
+                .when().get("countries/{value");
+        assertEquals(response.statusCode(),200);
+        assertEquals(response.contentType(),"application/json");
 
-        assertEquals(response.statusCode(), 200);
-        assertEquals(response.contentType(), "application/json");
-        String CountId = response.path("country_id").toString();
-        String CountName = response.path("country_name").toString();
-        String RegionId = response.path("region_id").toString();
+        String id = response.path("country_id");
+        assertEquals(id,"US");
+        String name = response.path("Country_name");
+        assertEquals(name,"United States of America");
+        String regionId = response.path("Region_id");
 
-        System.out.println("CountId = " + CountId);
-        System.out.println("CountName = " + CountName);
-        System.out.println("RegionId = " + RegionId);
+        /*Hamcrest
+        given().accept(ContentType.JSON)
+                .pathParam("value", "US")
+                .when().get("countries/{value")
+                .then().statusCode(200)
+                .and().contentType("application/json")
+                .and().assertThat().body("country_id",equalTo("US"),
+                "Country_name",equalTo("United States of America"));
+         */
     }
 
     @Test
@@ -65,14 +73,10 @@ public class HomeWork_1 {
 - Count is 25
          */
         Response response = given().accept(ContentType.JSON)
-                .and().queryParam("q", "{\"department_id\":80")
+                .and().queryParam("q", "{\"department_id\":80}")
                 .when().get("/employees");
 
-        JsonPath jsonPath = response.jsonPath();
 
-        assertEquals(response.statusCode(),200);
-        assertEquals(response.contentType(),"application/json");
-        assertTrue(jsonPath.get());
 
     }
 
@@ -92,10 +96,10 @@ Q3:
 Australia,China,India,Japan,Malaysia,Singapore
 
      */
-        /*
+
         Response response = given().accept(ContentType.JSON)
-                .and().queryParam("q", "{region_id:3")
-                .when().get("/countries");
+                .and().queryParam("q", "{region_id:3}")
+                .when().get("countries/{q}");
 
         assertEquals(response.statusCode(),200);
         List<Integer> regionsId = response.path("items.regions_id");
@@ -104,21 +108,15 @@ Australia,China,India,Japan,Malaysia,Singapore
             System.out.println(regionsid);
             assertEquals(regionsid,3);
         }
-        boolean hasmore = response.path("false");
-        JsonPath jsonPath = response.jsonPath();
 
-      //  List<String> names = "Australia,China,India,Japan,Malaysia,Singapore";
-
-        boolean hasmre = jsonPath.getBoolean("hasMore");
-        int count =jsonPath.getInt("count");
-        List<String> countNames = jsonPath.getList("Country_name");
-
+        boolean hasmore = response.path("hasMore");
         assertEquals(hasmore,"false");
-        assertEquals(count,6);
-        assertEquals(countNames,);
 
 
-         */
+        List<String> countryName = response.path("Country_name");
+        assertEquals(countryName,"Australia,China,India,Japan,Malaysia,Singapore");
+
+
     }
 
 }

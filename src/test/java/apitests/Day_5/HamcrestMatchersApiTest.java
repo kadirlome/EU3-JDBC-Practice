@@ -30,11 +30,12 @@ public class HamcrestMatchersApiTest {
                 .then().assertThat().statusCode(200)
                 .and().contentType(equalTo("application/json;charset=UTF-8"))
                 .and().header("Content-Encoding",equalTo("gzip"))
+                .and().header("Content-Length",equalTo("236"))
                 .and().header("Connection",equalTo("Keep-Alive"))
                 .and().header("Date",notNullValue())
-                .and().assertThat().body("teachers.firstName[0]",equalTo("Alexander"),
-                "teachers.lastName[0]",equalTo("Syrup"),
-                "teachers.gender[0]",equalTo("male"))
+                .and().assertThat().body( "teachers.firstName[0]",equalTo("Alexander"),
+                          "teachers.lastName[0]",equalTo("Syrup"),
+                                               "teachers.gender[0]",equalTo("male"))
                 .log().all();
     }
 

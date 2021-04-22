@@ -5,9 +5,13 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import jdbctests.ConfigurationReader;
+
 import static org.testng.Assert.*;
+
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
+import static org.hamcrest.Matchers.*;
 
 import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
@@ -22,7 +26,7 @@ public class HomeWork_2 {
 
 
     @Test
-    public void Question1(){
+    public void Question1() {
 
     /*
 SPARTAN API
@@ -41,47 +45,25 @@ gender is "Male",
 phone is 7551551687
 */
 
-        Response response = given().accept(ContentType.JSON)
-                .and().pathParam("id", 20 )
-                .when().get("api/spartans/{id}");
-
-        assertEquals(response.statusCode(),200);
-        assertEquals(response.contentType(),"application/json");
-        response.header("Date");
-
-        JsonPath jsonPath = response.jsonPath();
-
-   //     String  JsonTransfer = jsonPath.getString("Transfer-Encoding");
-    //    assertEquals(JsonTransfer,"chunked");
-
-        int jsonId = jsonPath.getInt("id");
-        System.out.println("jsonId = " + jsonId);
-        assertEquals(jsonId,20);
-
-        String name = jsonPath.getString("name");
-        System.out.println("name = " + name);
-        assertEquals(name,"Lothario");
-
-        String gender = jsonPath.getString("gender");
-        System.out.println("gender = " + gender);
-        assertEquals(gender,"Male");
-
-        int phone = jsonPath.getInt("phone");
-        System.out.println("phone = " + phone);
-        assertEquals(phone,"7551551687");
-
+        given().accept(ContentType.JSON)
+                .and().pathParam("id", 20)
+                .when().get("api/spartans/{id}")
+                .then().statusCode(200)
+                .and().contentType(equalTo("application/json"))
+                .and().header("Transfer-Encoding", equalTo("chunked"))
+                .and().assertThat().body("id", equalTo(20),
+                "name", equalTo("Lothario"),
+                                     "gender", equalTo("Male"),
+                                     "phone", equalTo(7551551687l));
 
     }
-
-
-
 
 
  /*
 Q2:
 Given accept type is json
 And query param gender = Female
-And queary param nameContains = r
+And query param nameContains = r
 When user sends a get request to "/api/spartans/search"
 Then status code is 200
 And content-type is "application/json;charset=UTF-8"
@@ -91,4 +73,26 @@ And size is 20
 And totalPages is 1
 And sorted is false
      */
+
+    @Test
+    public void Question2(){
+        Response response = given().accept(ContentType.JSON)
+                .and().queryParam("gender", "Female")
+                .and().queryParam("nameContains", "r")
+                .when().get("api/spartans/search");
+
+        assertEquals(response.statusCode(),200);
+        assertEquals(response.contentType(),"application/json");
+        
+        JsonPath jsonData = response.jsonPath();
+        
+        String genders = jsonData.getString("gender");
+
+
+        
+
+
+
+
+    }
 }
