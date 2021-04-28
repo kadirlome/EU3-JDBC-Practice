@@ -50,6 +50,25 @@ public class TestJsonToCoolection {
 
     }
     @Test
-    public void test2(){}
+    public void test2(){
+        Response response = given().accept(ContentType.JSON)
+                .when().get("api/spartans");
+
+        List<Map<String,Object>> allSpartans = response.body().as(List.class);
+
+        System.out.println(allSpartans.get(0));
+
+        Map<String, Object> spartans1 = allSpartans.get(1);
+
+        System.out.println("spartans1 = " + spartans1);
+
+        int count = 1;
+        for (Map<String, Object> spartansiter : allSpartans) {
+            System.out.println(count+" -spartan"+spartansiter);
+            count++;
+        }
+
+
+    }
 
 }

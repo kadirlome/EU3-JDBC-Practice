@@ -3,13 +3,13 @@ package apitests;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import jdbctests.ConfigurationReader;
 import static org.hamcrest.Matchers.*;
 import static org.testng.Assert.*;
 
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.lang.module.Configuration;
 import java.util.List;
 import java.util.Locale;
 
@@ -17,11 +17,6 @@ import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
 
 public class HomeWork_1 {
-
-    @BeforeClass
-    public void beforeclass() {
-        baseURI = ConfigurationReader.get("spartan_api_url");
-    }
 
     @Test
     public void Tcase1() {
@@ -39,14 +34,16 @@ public class HomeWork_1 {
         Response response = given().accept(ContentType.JSON)
                 .pathParam("value", "US")
                 .when().get("countries/{value");
+
         assertEquals(response.statusCode(),200);
         assertEquals(response.contentType(),"application/json");
 
         String id = response.path("country_id");
         assertEquals(id,"US");
+
         String name = response.path("Country_name");
         assertEquals(name,"United States of America");
-        String regionId = response.path("Region_id");
+
 
         /*Hamcrest
         given().accept(ContentType.JSON)
@@ -72,11 +69,30 @@ public class HomeWork_1 {
 - And all department_ids are 80
 - Count is 25
          */
+
+        //THIS IS NOT CORRECT-CHECK IT AFTER
         Response response = given().accept(ContentType.JSON)
                 .and().queryParam("q", "{\"department_id\":80}")
-                .when().get("/employees");
+                .when().get("employees");
+
+        JsonPath jsonPath = response.jsonPath();
+        assertEquals(response.statusCode(),200);
+        assertEquals(response.contentType(),"application/json");
 
 
+        //And all job_ids start with 'SA'
+        List<String> alljobIds = jsonPath.getList("job_ids");
+        for (int i = 0; i < alljobIds.size()-1; i++) {
+            if(alljobIds.get(i).substring(0,2) == "SA"){
+            }
+
+        }
+
+        //And all department_ids are 80
+        List<String> alldepartmenId = jsonPath.getList("department_ids");
+        for (String departments : alldepartmenId) {
+            assertEquals(departments,80);
+        }
 
     }
 

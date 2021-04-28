@@ -23,7 +23,7 @@ public class Pojo_deserialize {
     public void OneSpartanPojo() {
         Response response = given().accept(ContentType.JSON)
                 .pathParam("id", 15)
-                .when().get("http://52.55.102.92:8000/api/spartans/{id}");
+                .when().get("api/spartans/{id}");
 
         assertEquals(response.statusCode(), 200);
 
