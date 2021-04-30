@@ -1,4 +1,4 @@
-package apitests;
+package apitests.Day_1_2_3_4;
 
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;

@@ -7,8 +7,10 @@ import io.restassured.http.ContentType;
 import jdbctests.ConfigurationReader;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import utilities.ExcelUtil;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static io.restassured.RestAssured.baseURI;
@@ -72,7 +74,7 @@ public class PostRequestDemo {
         //HomeWokr 1
         //1-Createcsv file from mackaroo website , which inclides name,gender,pphone
         //2- Download csv file
-        //3- using testg data provider and apache poi create data driven posting from spartan
+        //3- using testng data provider and apache poi create data driven posting from spartan
 
         //HomeWork2
         //create one mackaroo api for name , gender.phone
@@ -101,6 +103,41 @@ public class PostRequestDemo {
                         "data.name",equalTo("MikeEU3"),
                         "data.gender",equalTo("Male"),
                         "data.phone",is(8877445596l));
+    }
+
+    @Test
+    public void Homework(){
+
+        ExcelUtil api_mock= new ExcelUtil("src/test/resources/MOCK_DATA.xls","data");
+        //get all data in list of Maps
+        List<Map<String, String>> dataList = api_mock.getDataList();
+
+
+/*
+        Spartan spartanEu = new Spartan();
+        spartanEu.setName("");
+        spartanEu.setGender("Male");
+        spartanEu.setPhone(8877445596l);
+
+        given().log().all()
+                .accept(ContentType.JSON)
+                .and()
+                .contentType(ContentType.JSON)
+                .and()
+                .body(spartanEu)
+                .when().post("/api/spartans").then().log().all()
+                .statusCode(201)
+                .and()
+                .contentType("application/json")
+                .and()
+                .body("success",is("A Spartan is Born!"),
+                        "data.name",equalTo("MikeEU5"),
+                        "data.gender",equalTo("Male"),
+                        "data.phone",is(8877445596l));
+
+
+
+ */
     }
 
 }
