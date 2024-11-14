@@ -13,10 +13,11 @@ public class SpartanGetRequest {
 
     @Test
     public void test1() {
-        given().accept(ContentType.JSON)
-                .when().get(SparUrl + "/api/spartans").then()
-                .assertThat().statusCode(200);
-        System.out.println();
+        given().accept(ContentType.JSON).when()
+                .get(SparUrl+"/api/spartans")
+                .then().statusCode(200)
+                .and().contentType("application/json");
+
     }
 
     @Test

@@ -15,6 +15,7 @@ public class SpartanTestWithParameters {
 
     @BeforeClass
     public void beforeclass(){
+
         baseURI="http://3.84.209.12:8000/";
     }
 

@@ -6,6 +6,8 @@ import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.awt.*;
+
 import static io.restassured.RestAssured.*;
 
 public class simpleGetRequest {
@@ -17,8 +19,12 @@ public class simpleGetRequest {
         Response response = RestAssured.get(hrurl);
         //print the status code
         System.out.println(response.statusCode());
+
         //print the json body
         response.jsonPath();
+
+        //Print the Json body
+        response.prettyPrint();
     }
         /*
         Given accept type is json
@@ -48,6 +54,11 @@ public class simpleGetRequest {
         Then the response status code must be 200
         and body is json format
          */
+
+        RestAssured.given().accept(ContentType.JSON).when().get(hrurl)
+                .then().assertThat().statusCode(200)
+                .and().contentType("application/json");
+
         RestAssured.given().accept(ContentType.JSON)
                 .when().get(hrurl).then()
                 .assertThat().statusCode(200)
@@ -74,6 +85,34 @@ public class simpleGetRequest {
 
         Assert.assertTrue(response.body().asString().contains("Americas"));
 
+        //Second way
+        /*
+                given()
+            .accept(ContentType.JSON)
+        .when()
+            .get(hrurl1 + "/2")
+        .then()
+            .assertThat()
+            .statusCode(200)
+            .and()
+            .contentType(ContentType.JSON)
+            .and()
+            .body(containsString("Americas"));
+         */
+
+
+        //Hemcrest Machers ile yapma
+        /*
+        Response response = given()
+                .accept(ContentType.JSON)
+                .when()
+                .get(hrurl1 + "/2");
+
+        Assert.assertThat(response.getStatusCode(), equalTo(200));
+        Assert.assertThat(response.getContentType(), equalTo("application/json"));
+        Assert.assertThat(response.body().asString(), containsString("Americas"));
+
+         */
 
     }
 }
