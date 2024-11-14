@@ -2,7 +2,7 @@ package apitests.Day_1_2_3_4;
 
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import org.testng.Assert;
+import static org.testng.Assert.*;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static io.restassured.RestAssured.*;
+import static org.testng.AssertJUnit.assertEquals;
 
 public class SpartanTestWithParameters {
 
@@ -28,14 +29,16 @@ public class SpartanTestWithParameters {
     And response content-type: application/json
     And "Blythe" should be in  response payload
      */
+
+
     @Test
     public void getSpartanID_PathParam(){
         Response response = given().accept(ContentType.JSON)
                 .and().pathParam("id",5)
                 .when().get("api/spartans/{id}");
-        Assert.assertEquals(response.statusCode(),200);
-        Assert.assertEquals(response.contentType(),"application/json");
-        Assert.assertTrue(response.body().asString().contains("Blythe"));
+        assertEquals(response.statusCode(),200);
+        assertEquals(response.contentType(),"application/json");
+        assertTrue(response.body().asString().contains("Blythe"));
 
     }
 
@@ -48,14 +51,16 @@ public class SpartanTestWithParameters {
     And response content-tye:application/json
     And Spartan not Found"message should be in response payload
      */
+
+
     @Test
     public void negativeSpartanTest(){
         Response response = given().accept(ContentType.JSON)
                 .and().pathParam("id", 500)
                 .when().get("api/spartans/{id}");
-        Assert.assertEquals(response.statusCode(),404);
-        Assert.assertEquals(response.contentType(),"application/json");
-        Assert.assertTrue(response.body().asString().contains("Not Found"));
+        assertEquals(response.statusCode(),404);
+        assertEquals(response.contentType(),"application/json");
+        assertTrue(response.body().asString().contains("Not Found"));
     }
 
 
@@ -70,16 +75,19 @@ public class SpartanTestWithParameters {
         And "Female" should be in response payload
         And "Janette" should be in response payload
      */
+
+
+
     @Test
     public void TestWithQueryParam(){
         Response response = given().accept(ContentType.JSON)
                 .and().queryParam("gender","Female")
                 .and().queryParam("nameContains","e")
                 .when().get("api/spartans/search");
-        Assert.assertEquals(response.statusCode(),200);
-        Assert.assertEquals(response.contentType(),"application/json");
-        Assert.assertTrue(response.body().asString().contains("Female"));
-        Assert.assertTrue(response.body().asString().contains("Janette"));
+        assertEquals(response.statusCode(),200);
+        assertEquals(response.contentType(),"application/json");
+        assertTrue(response.body().asString().contains("Female"));
+        assertTrue(response.body().asString().contains("Janette"));
 
     }
 
@@ -97,10 +105,10 @@ public class SpartanTestWithParameters {
 
         //response verification
         //verify status code
-        Assert.assertEquals(response.statusCode(),200);
-        Assert.assertEquals(response.contentType(),"application/json");
-        Assert.assertTrue(response.body().asString().contains("Female"));
-        Assert.assertTrue(response.body().asString().contains("Janette"));
+        assertEquals(response.statusCode(),200);
+        assertEquals(response.contentType(),"application/json");
+        assertTrue(response.body().asString().contains("Female"));
+        assertTrue(response.body().asString().contains("Janette"));
 
 
     }

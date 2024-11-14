@@ -15,6 +15,7 @@ import static io.restassured.RestAssured.*;
 public class SpartanTestWithPath {
     @BeforeClass
     public void beforeclass(){
+
         baseURI="http://3.84.209.12:8000/";
     }
 
@@ -76,7 +77,7 @@ public class SpartanTestWithPath {
         System.out.println(id);
 
 
-        //geet last names on the list
+        //get last names on the list
         String firstname = response.path("name[-1]");
         System.out.println(firstname);
 
